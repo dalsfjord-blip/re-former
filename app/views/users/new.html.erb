@@ -1,6 +1,9 @@
-<h1>Registrer ny bruker (Rent HTML-skjema)</h1>
+<% if false %>
+<!--<h1>Registrer ny bruker (Rent HTML-skjema)</h1>
 
 <form action="/users" method="post" accept-charset="UTF-8">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
   <div>
     <label for="username">Username:</label>
     <input type="text" id="username" name="user[username]">
@@ -17,4 +20,41 @@
   </div>
 
   <input type="submit" value="Opprett bruker">
-</form>
+</form>-->
+<% end %>
+
+<h1>Registrer ny bruker (form_with)</h1>
+
+<%= form_with model: @user do |f| %>
+
+  <%# --- FEILMELDINGSBLOKK START --- %>
+  <% if @user.errors.any? %>
+    <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 15px;">
+      <h2><%= pluralize(@user.errors.count, "error") %> forhindret lagring:</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%# --- FEILMELDINGSBLOKK SLUTT --- %>
+
+  <div>
+    <%= f.label :username, "Brukernavn" %>
+    <%= f.text_field :username %>
+  </div>
+
+  <div>
+    <%= f.label :email, "E-post" %>
+    <%= f.email_field :email %>
+  </div>
+
+  <div>
+    <%= f.label :password, "Passord" %>
+    <%= f.password_field :password %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
+
